@@ -1,6 +1,8 @@
 package com.gustavo.playerspotify.manager.spotify
 
+import android.graphics.Bitmap
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.spotify.protocol.types.ImageUri
 import com.spotify.protocol.types.Track
 
 interface SpotifyPlayerProtocol {
@@ -10,6 +12,7 @@ interface SpotifyPlayerProtocol {
     fun onNext()
     fun onPrev()
     fun onSeek(positionMS: Long)
+    fun getImage(uri: ImageUri, callback: (Bitmap) -> Unit)
 }
 
 class SpotifyPlayer(var remote: SpotifyAppRemote): SpotifyPlayerProtocol {
@@ -28,6 +31,16 @@ class SpotifyPlayer(var remote: SpotifyAppRemote): SpotifyPlayerProtocol {
 
     //endregion
 
+
+    //region # Play
+
+    override fun getImage(uri: ImageUri, callback: (Bitmap) -> Unit) {
+        this.remote.imagesApi.getImage(uri).setResultCallback {
+            callback(it)
+        }
+    }
+
+    //endregion
 
     //region # Controls
 

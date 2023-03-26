@@ -8,15 +8,15 @@ import com.gustavo.playerspotify.manager.spotify.SpotifyManager
 import com.gustavo.playerspotify.manager.spotify.SpotifyManagerDelegate
 import com.gustavo.playerspotify.manager.spotify.SpotifyManagerProtocol
 
-class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate {
+class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate, PlayerContainerViewDelegate {
 
     private val spotifyManager: SpotifyManagerProtocol = SpotifyManager.INSTANCE
+    lateinit var playerContainerView: PlayerContainerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_player)
-
-        PlayerContainerView(this)
+        playerContainerView = PlayerContainerView(this, this)
     }
 
 
@@ -44,8 +44,11 @@ class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate {
     //region # SPOTIFY
 
     override fun onConnect() {
-        this.spotifyManager.player?.onPlay("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL") {
-            Log.e("NAME", it.name)
+
+        this.spotifyManager.player?.let { player ->
+            player.onPlay("spotify:artist:5JXhkyafynxCvxtov7C1PV") {
+                this@PlayerActivity.playerContainerView.setInfo(it)
+            }
         }
     }
 
@@ -54,4 +57,17 @@ class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate {
     }
 
     //endregion
+
+
+    override fun onClickNext() {
+    }
+
+    override fun onClickPrev() {
+    }
+
+    override fun onClickPlay() {
+    }
+
+    override fun onChangeSlider(msPosition: Long) {
+    }
 }

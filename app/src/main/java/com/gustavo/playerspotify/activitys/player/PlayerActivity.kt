@@ -32,7 +32,6 @@ class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate, PlayerContai
         this.spotifyManager.onStop()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         this.spotifyManager.onStop()
@@ -46,7 +45,7 @@ class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate, PlayerContai
     override fun onConnect() {
 
         this.spotifyManager.player?.let { player ->
-            player.onPlay("spotify:artist:5JXhkyafynxCvxtov7C1PV") {
+            player.onPlay("spotify:playlist:6DTUDFBOJ86mGGffxE0lfW") {
                 this@PlayerActivity.playerContainerView.setInfo(it)
             }
         }
@@ -58,14 +57,20 @@ class PlayerActivity : AppCompatActivity(), SpotifyManagerDelegate, PlayerContai
 
     //endregion
 
-
     override fun onClickNext() {
+        this.spotifyManager.player?.onNext()
     }
 
     override fun onClickPrev() {
+        this.spotifyManager.player?.onPrev()
     }
 
     override fun onClickPlay() {
+        this.spotifyManager.player?.onResume()
+    }
+
+    override fun onClickPause() {
+        this.spotifyManager.player?.onPause()
     }
 
     override fun onChangeSlider(msPosition: Long) {

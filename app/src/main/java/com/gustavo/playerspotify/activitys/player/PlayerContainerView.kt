@@ -16,6 +16,7 @@ interface PlayerContainerViewDelegate {
     fun onClickNext()
     fun onClickPrev()
     fun onClickPlay()
+    fun onClickPause()
     fun onChangeSlider(msPosition: Long)
 }
 
@@ -35,7 +36,7 @@ class PlayerContainerView(
     private var countTextView: TextView = playerActivity.findViewById(R.id.count)
     private var descriptionTextView: TextView = playerActivity.findViewById(R.id.description)
     private var sliderSeekBar: AppCompatSeekBar = playerActivity.findViewById(R.id.slider)
-
+    private var isPlay = true
 
     override fun setInfo(track: Track) {
         this.initEventsButtons()
@@ -71,7 +72,15 @@ class PlayerContainerView(
         }
 
         this.playImageButton.setOnClickListener {
-            this.delegate.onClickPlay()
+            if(this.isPlay) {
+                this.isPlay = false
+                this.delegate.onClickPause()
+                this.playImageButton.setImageResource(R.drawable.baseline_pause_circle_filled)
+            } else {
+                this.isPlay = true
+                this.delegate.onClickPlay()
+                this.playImageButton.setImageResource(R.drawable.round_play_circle)
+            }
         }
     }
 
